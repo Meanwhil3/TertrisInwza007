@@ -100,22 +100,22 @@ public class Piece {
     }
 
     // function to permute the pieces
-    private void permute(int i, int[] a) {
+    private void preview(int i, int[] a) {
         if (i == 6)
             return;
         int swap = ThreadLocalRandom.current().nextInt(i, 7);
         int temp = a[i];
         a[i] = a[swap];
         a[swap] = temp;
-        permute(i + 1, a);
+        preview(i + 1, a);
     }
 
     // generates a permutation of the seven pieces and returns it
-	public int[] getPermutation () {
+	public int[] getPreview () {
 		int[] res = new int[7];
 		for (int i = 0; i < 7; i++)
 			res[i] = i;
-		permute(0, res);
+		preview(0, res);
 		return res;
 	}
 }
