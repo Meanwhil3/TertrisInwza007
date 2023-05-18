@@ -256,6 +256,104 @@ public class Tetris {
             }
         }
     }
+    // public boolean checkTSpin(Active) {
+        
+    //     // Get the positions of all blocks in the active piece
+    //     Point[] pos = active.pos;
+    
+    //     // Check if the active piece is a T-shaped piece
+    //     if (active.id != 6) {
+    //         return false;
+    //     }
+    
+    //     // Get the central block of the T-shaped piece
+    //     Point centerBlock = pos[1];
+    
+    //     // Check cells adjacent to the central block
+    //     int count = 0;
+    //     for (Point p : new Point[] {new Point(centerBlock.r - 1, centerBlock.c),
+    //                                 new Point(centerBlock.r + 1, centerBlock.c),
+    //                                 new Point(centerBlock.r, centerBlock.c - 1),
+    //                                 new Point(centerBlock.r, centerBlock.c + 1)}) {
+    //         if (grid[p.r][p.c] > 0) {
+    //             count++;
+    //         }
+    //     }
+    
+    //     // If three adjacent cells are occupied, and the active piece is a T-shape, then a T-spin has occurred
+    //     return count >= 3;
+    // }
+    // 
+    // 
+    // 
+    // public boolean isTSpin() {
+        
+    //     Point[] pos;
+        
+    //     // Check if the last maneuver was a rotation
+    //     if (curr.state == 0)
+    //         return false;
+    
+    //     // Get the front and back corners of the 3x3 square occupied by the T piece
+    //     Point[] frontCorners = {pos[0], pos[2]};
+    //     Point[] backCorners = {pos[1], pos[3]};
+    
+    //     // Count the number of occupied blocks in the front and back corners
+    //     int frontOccupiedCount = 0;
+    //     int backOccupiedCount = 0;
+    
+    //     for (Point corner : frontCorners) {
+    //         if (grid.isOccupied(corner.r, corner.c))
+    //             frontOccupiedCount++;
+    //     }
+    
+    //     for (Point corner : backCorners) {
+    //         if (grid.isOccupied(corner.r, corner.c))
+    //             backOccupiedCount++;
+    //     }
+    
+    //     // Check if it is a proper T-spin or a Mini T-spin
+    //     if (frontOccupiedCount == 2 && backOccupiedCount >= 1) {
+    //         // Check if the last rotation offset is 1 by 2 blocks (SRS offset)
+    //         boolean lastRotationOffset = (curr.state == 1 && pos[0].c != pos[2].c) || (curr.state == 3 && pos[0].r != pos[2].r);
+    //         return lastRotationOffset || backOccupiedCount == 2;
+    //     }
+    
+    //     return false;
+    // }
+    public boolean someMethod(Piece.Active curr, Piece.Point[] pos, int[][] grid) {
+        // Check if the last maneuver was a rotation
+        if (curr.state == 0)
+            return false;
+    
+        // Get the front and back corners of the 3x3 square occupied by the T piece
+        Piece.Point[] frontCorners = {pos[0], pos[2]};
+        Piece.Point[] backCorners = {pos[1], pos[3]};
+    
+        // Count the number of occupied blocks in the front and back corners
+        int frontOccupiedCount = 0;
+        int backOccupiedCount = 0;
+    
+        for (Piece.Point corner : frontCorners) {
+            if (grid[corner.r][corner.c] != 0)
+                frontOccupiedCount++;
+        }
+    
+        for (Piece.Point corner : backCorners) {
+            if (grid[corner.r][corner.c] != 0)
+                backOccupiedCount++;
+        }
+    
+        // Check if it is a proper T-spin or a Mini T-spin
+        if (frontOccupiedCount == 2 && backOccupiedCount >= 1) {
+            // Check if the last rotation offset is 1 by 2 blocks (SRS offset)
+            boolean lastRotationOffset = (curr.state == 1 && pos[0].c != pos[2].c) || (curr.state == 3 && pos[0].r != pos[2].r);
+            return lastRotationOffset || backOccupiedCount == 2;
+        }
+    
+        return false;
+    }
+    
     // Post condition: any full lines are cleared and the respective attribute is incremented
     private int clearLines () {
         int numCleared = 0;
