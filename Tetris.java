@@ -92,6 +92,17 @@ public class Tetris {
 
     private int combo = 0;
 
+    public static boolean isTSpin(int[][] grid, int row, int col) {
+        // ตรวจสอบว่าอยู่ในตำแหน่งที่มีการเกิด T-spin ได้หรือไม่
+        if (grid[row][col] == 0 && grid[row - 1][col] != 0 && grid[row - 1][col - 1] != 0 && grid[row - 1][col + 1] != 0) {
+            // ตรวจสอบว่ามีช่องว่างรองรับการหมุน T-spin หรือไม่
+            if (grid[row - 2][col] == 0 && (grid[row - 2][col - 1] == 0 || grid[row - 2][col + 1] == 0)) {
+                return true; // เกิด T-spin
+            }
+        }
+        return false; // ไม่เกิด T-spin
+    }
+
     // Thread to manages the gravity of the pieces
     private Timer t = new Timer();
     private TimerTask move = new TimerTask() {
