@@ -86,6 +86,7 @@ public class Tetris {
     protected int level = 0;
     protected int lockTime = 0;
     protected int linesCleared = 0;
+    protected int numBack2Back = -1;
 
     // Constants for UI
     private final int[] dy = { 50, 100, 150, 200, 300 };
@@ -289,7 +290,16 @@ public class Tetris {
             linesCleared++;
             numCleared++;
         }
+        if (numCleared != 0){
+            if (numCleared % 4 == 0){
+                numBack2Back += 1;
+            }
+            else{
+                numBack2Back = -1;
+            }
+        }
         return numCleared;
+
     }
     public void restart () {
         curr = null;
