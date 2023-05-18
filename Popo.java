@@ -29,8 +29,8 @@ public class Popo implements ActionListener {
         p2.setBackground(Color.BLACK);
         p3.setBackground(Color.BLACK);
         p4.setBackground(Color.BLACK);
-        lt.setForeground(Color.GREEN);
-        lh.setForeground(Color.RED);
+        lt.setForeground(Color.WHITE);
+        lh.setForeground(Color.WHITE);
         lh.setFont(new Font("Verdana", Font.BOLD, 24));
         lt.setFont(new Font("Verdana", Font.BOLD, 35));
         p1.setLayout(new FlowLayout());
@@ -42,10 +42,10 @@ public class Popo implements ActionListener {
         b2.setFocusable(false);
         b1.setFont(new Font("Verdana", Font.BOLD, 15));
         b2.setFont(new Font("Verdana", Font.BOLD, 15));
-        b1.setForeground(Color.WHITE);
-        b2.setForeground(Color.WHITE);
-        b1.setBackground(Color.BLUE);
-        b2.setBackground(Color.BLUE);
+        b1.setForeground(Color.BLACK);
+        b2.setForeground(Color.BLACK);
+        b1.setBackground(Color.WHITE);
+        b2.setBackground(Color.WHITE);
         frame.setLayout(new GridLayout(4,1));
         frame.add(p1);
         frame.add(p2);
