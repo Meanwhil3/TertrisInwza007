@@ -16,7 +16,7 @@ public class GamePanel extends Panel implements KeyListener {
     private Dimension dim;
     private final Color background = Color.BLACK;
 
-    // Attribute represent the number of players
+    // Attribute represent the numer of players
     private int numOfPlayers;
 
     // left and right portions of the panel
@@ -24,7 +24,7 @@ public class GamePanel extends Panel implements KeyListener {
 
     private BufferedReader br;
     private int [][] key;
-    GamePanel (int numbOfPlayers) {
+    GamePanel (int numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
         key = new int[numOfPlayers][6];
         screens = new Tetris[numOfPlayers];
@@ -33,6 +33,9 @@ public class GamePanel extends Panel implements KeyListener {
             for (int i = 0; i < numOfPlayers; i++)
                 for (int j = 0; j < 6; j++)
                     key[i][j] = Integer.parseInt(br.readLine().trim());
+        } catch (IOException ie) {
+            System.out.println("INVALID INPUT SEQUENCE");
+            System.exit(0);
         }
         addKeyListener(this);
         for (int i = 0; i < numOfPlayers; i++)
@@ -50,7 +53,7 @@ public class GamePanel extends Panel implements KeyListener {
         gi.fillRect(0, 0, dim.width, dim.height);
         for (int i = 0; i < numOfPlayers; i++) {
             if (screens[i] == null)
-                continue
+                continue;
             screens[i].displayGrid(gi);
             screens[i].displayPieces(gi);
             screens[i].displayUI(gi);
