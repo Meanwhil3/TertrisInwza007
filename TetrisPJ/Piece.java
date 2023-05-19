@@ -1,12 +1,4 @@
-package TetrisPJ;
-
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.Collections;
 
 public class Piece {
     // starting position for each pieces and create a new Point object
@@ -30,35 +22,9 @@ public class Piece {
         }
     }
 
-    public static ArrayList<Integer> getRandomNumbers(int count, int min, int max) {
-        List<Integer> availableNumbers = new ArrayList<>();
-        for (int i = min; i <= max; i++) {
-            availableNumbers.add(i);
-        }
-
-        Set<Integer> uniqueNumbers = new HashSet<>();
-        Random random = new Random();
-
-        while (uniqueNumbers.size() < count) {
-            int randomNumber = random.nextInt(availableNumbers.size());
-            int number = availableNumbers.get(randomNumber);
-            uniqueNumbers.add(number);
-            availableNumbers.remove(randomNumber);
-        }
-
-        ArrayList<Integer> randomList = new ArrayList<>(uniqueNumbers);
-        Collections.shuffle(randomList); // เรียงลำดับแบบสุ่ม
-        return randomList;
-    }
-
-
-
     // generates a random piece
     public Active getActive () {
-        ArrayList<Integer> randomList = getRandomNumbers(7, 0, 6);
-        Random rand = new Random();
-        int randomIndex = rand.nextInt(randomList.size()); // เลือกเลขสุ่มออกมาในช่วงตั้งแต่ 0 ถึง size-1
-        int id = randomList.get(randomIndex);
+        int id = (int)(Math.random()*7);
         Point[] newPiece = {
             new Point(pieces[id][0].r, pieces[id][0].c), 
             new Point(pieces[id][1].r, pieces[id][1].c), 
@@ -83,6 +49,8 @@ public class Piece {
     static class Active {
         Point[] pos;
         int id;
+        // lor = top most rows / hir = bottom most rows
+        // loc = left most colums / hic =  right most colums
         int lor, hir, loc, hic;
         int state = 0;
         Active (Point[] pos, int id) {

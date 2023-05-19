@@ -1,5 +1,3 @@
-package TetrisPJ;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -7,48 +5,60 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class GamePanel extends Panel implements KeyListener {
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = -8444879183679955468L;
 
-    // Attribute for double buffered display
+    // variables for double buffered display
     private BufferedImage bi;
     private Graphics gi;
 
+    // dimensions of the frame
     private Dimension dim;
+
+    // constants for panel
     private final Color background = Color.BLACK;
 
-    // Attribute represent the numer of players
+    // Variable representing the number of players
     private int numOfPlayers;
 
-    // left and right portions of the panel
+    // the left and right portions of the panel
     Tetris[] screens;
 
     private BufferedReader br;
-    private int [][] key;
-    GamePanel (int numOfPlayers) {
+    private int[][] key;
+    public boolean isShielded = false;
+
+    GamePanel(int numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
-        key = new int[numOfPlayers][6];
+        key = new int[numOfPlayers][7]; // Increased array size to accommodate the new rotate left key
         screens = new Tetris[numOfPlayers];
         try {
-            br = new BufferedReader(new FileReader("INPUT"));
-            for (int i = 0; i < numOfPlayers; i++)
-                for (int j = 0; j < 6; j++)
-                    key[i][j] = Integer.parseInt(br.readLine().trim());
-        } catch (IOException ie) {
-            System.out.println("INVALID INPUT SEQUENCE");
+            br = new BufferedReader(new FileReader("C:\\Users\\Neo\\Documents\\NetBeansProjects\\Project\\src\\project\\INPUT"));
+            for (int i = 0; i < numOfPlayers; i++) {
+                for (int j = 0; j < 7; j++) { // Increased loop limit to accommodate the new rotate left key
+                    String line = br.readLine();
+                    if (line == null) {
+                        throw new IOException("INVALID INPUT SEQUENCE: Insufficient data for player " + (i + 1));
+                    }
+                    key[i][j] = Integer.parseInt(line.trim());
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
             System.exit(0);
         }
         addKeyListener(this);
         for (int i = 0; i < numOfPlayers; i++)
-            screens[i] = new Tetris(400*i, 0, this, i);
+            screens[i] = new Tetris(400 * i, 0, this, i);
     }
-    public void paint (Graphics g) {
+
+    public void paint(Graphics g) {
         dim = getSize();
         bi = new BufferedImage(dim.width, dim.height, BufferedImage.TYPE_INT_RGB);
         gi = bi.getGraphics();
         update(g);
     }
 
-    public void update (Graphics g) {
+    public void update(Graphics g) {
         gi.setColor(background);
         gi.fillRect(0, 0, dim.width, dim.height);
         for (int i = 0; i < numOfPlayers; i++) {
@@ -62,24 +72,28 @@ public class GamePanel extends Panel implements KeyListener {
     }
 
     @Override
-    public void keyTyped (KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+    }
+
     @Override
-    public void keyReleased (KeyEvent e) {
+    public void keyReleased(KeyEvent e) {
         for (int i = 0; i < numOfPlayers; i++) {
-            for (int j = 0; j < 6; j++) {
+            for (int j = 0; j < 7; j++) { // Increased loop limit to accommodate the new rotate left key
                 if (e.getKeyCode() == key[i][j]) {
                     if (screens[i].curr == null)
                         break;
-                    if (j == 3)
-                        screens[i].delay = (screens[i].level >= 20 ? Tetris.GLOBAL_DELAY[19] : Tetros.GLOBAL_DELAY[screens[i].level]);
+                    if (j == 4)
+                        screens[i].delay = (screens[i].level >= 20 ? Tetris.GLOBAL_DELAY[19] : Tetris.GLOBAL_DELAY[screens[i].level]);
+                        
                 }
             }
         }
     }
+
     @Override
-    public void keyPressed (KeyEvent e) {
+    public void keyPressed(KeyEvent e) {
         // user input
-        // three case that handle when user adjusts the game states (ACTIVE, PAUSEd, CLOSED)
+        // three cases that handle when the user adjusts the game states (ACTIVE, PAUSED, CLOSEd)
         if (e.getKeyCode() == KeyEvent.VK_P) {
             boolean currentState = screens[0].isPaused;
             for (int i = 0; i < numOfPlayers; i++)
@@ -97,7 +111,7 @@ public class GamePanel extends Panel implements KeyListener {
             return;
         int keyCode = e.getKeyCode();
         for (int i = 0; i < numOfPlayers; i++) {
-            for (int j = 0; j < 6; j++) {
+            for (int j = 0; j < 7; j++) { // Increased loop limit to accommodate the new rotate left key
                 if (keyCode == key[i][j]) {
                     if (screens[i].curr == null)
                         break;
@@ -108,15 +122,18 @@ public class GamePanel extends Panel implements KeyListener {
                             break;
                         case 1:
                             screens[i].movePiece(0, 1);
+                            repaint();
+                            break;
                         case 2:
                             screens[i].rotateRight();
                             break;
                         case 3:
                             screens[i].rotateLeft();
                             break;
-                        case 4:
-                            screens[i].delay = (screens[i].level >= 20 ? Tetris.GLOBAL_DELAY[19] : Tetris.GLOBAL_DELAY[screens[i].level])/9;
-                        case 5:
+                        case 4: // soft drop
+                            screens[i].delay = (screens[i].level >= 20 ? Tetris.GLOBAL_DELAY[19] : Tetris.GLOBAL_DELAY[screens[i].level]) / 8;
+                            break;
+                        case 5:// hold
                             if (screens[i].isHolding)
                                 break;
                             if (screens[i].holdId == 0) {
@@ -125,15 +142,15 @@ public class GamePanel extends Panel implements KeyListener {
                             } else {
                                 int temp = screens[i].holdId;
                                 screens[i].holdId = screens[i].curr.id;
-                                screens[i].curr = screens[i].p.getActive(temp-1);
+                                screens[i].curr = screens[i].p.getActive(temp - 1);
                             }
                             screens[i].isHolding = true;
                             screens[i].time = 1 << 30;
                             break;
-                        case 6:
+                        case 6: // hard drop
                             screens[i].time = 1 << 30;
                             screens[i].lockTime = 1 << 30;
-                            while(screens[i].movePiece(1, 0));
+                            while (screens[i].movePiece(1, 0)) ;
                             break;
                     }
                 }
@@ -147,13 +164,13 @@ public class GamePanel extends Panel implements KeyListener {
             screens[i].isGameOver = true;
     }
 
-    protected void sendGarbage (int id, int send) {
+    protected void sendGarbage(int id, int send) {
         if (numOfPlayers == 1)
             return;
-        int rand = (int)(Math.random()*(numOfPlayers - 1));
+        int rand = (int) (Math.random() * (numOfPlayers - 1));
         if (rand >= id)
             rand++;
         screens[rand].addGarbage(send);
+        // System.out.println("SENT " + send);
     }
-
 }
