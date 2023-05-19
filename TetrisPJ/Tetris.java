@@ -86,7 +86,7 @@ public class Tetris {
     protected int level = 0;
     protected int lockTime = 0;
     protected int linesCleared = 0;
-    protected int numBack2Back = -1;
+    protected int tspin = 0;
 
     // Constants for UI
     private final int[] dy = { 50, 100, 150, 200, 300 };
@@ -257,18 +257,18 @@ public class Tetris {
         }
     }
     
-    public void checkTSpinType(Piece.Active curr, Piece.Point[] pos, int[][] grid) {
-        boolean isTSpin = isTSpin(curr, pos, grid);
-        boolean isMiniTSpin = isMiniTSpin(curr, pos, grid);
+    // public void checkTSpinType(Piece.Active curr, Piece.Point[] pos, int[][] grid) {
+    //     boolean isTSpin = isTSpin(curr, pos, grid);
+    //     boolean isMiniTSpin = isMiniTSpin(curr, pos, grid);
     
-        if (isTSpin) {
-            System.out.println("T-spin");
-        } else if (isMiniTSpin) {
-            System.out.println("Mini T-spin");
-        } else {
-            System.out.println("Not a T-spin or Mini T-spin");
-        }
-    }
+    //     if (isTSpin) {
+    //         System.out.println("T-spin");
+    //     } else if (isMiniTSpin) {
+    //         System.out.println("Mini T-spin");
+    //     } else {
+    //         System.out.println("Not a T-spin or Mini T-spin");
+    //     }
+    // }
     
     public boolean isTSpin(Piece.Active curr, Piece.Point[] pos, int[][] grid) {
         // Check if the last maneuver was a rotation
@@ -358,20 +358,21 @@ public class Tetris {
             numCleared++;
     
             // Check for T-spin
+            if (p.getActive().id == 6) {
             Piece.Active currPiece = p.getActive(); // Get the current piece
-            Piece.Point[] currPos = curr.pos ; // Get the current piece's position
+            Piece.Point[] currPos = currPiece.pos ; // Get the current piece's position
             boolean isTSpin = isTSpin(currPiece, currPos, grid);
-            if (isTSpin) {
-                System.out.println("T-spin occurred");
-            }
+            tspin++;
+            if ((isTSpin) && (tspin == 2)){
+                System.out.println();
+                
     
-            if (numCleared != 0){
-                if (numCleared % 4 == 0){
-                    numBack2Back += 1;
-                }
-                else{
-                    numBack2Back = -1;
-                }
+            }else if((isTSpin) && (tspin == 1)){
+                System.out.println();
+                
+    
+            }
+            tspin = 0;
             }
     }
         return numCleared;
