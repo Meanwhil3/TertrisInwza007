@@ -220,7 +220,7 @@ public class Tetris  {
 		if (isPaused)
 			gi.drawString("PAUSED", panelC + 10, 30);
 		if (isGameOver)
-			gi.drawString("GAMEOVER -- Q FOR QUIT; R FOR RESTART", panelC + 10, panelR + 40);
+			gi.drawString("GAMEOVER -- ESCAPE FOR QUIT; R FOR RESTART", panelC + 10, panelR + 40);
 		gi.drawString("HOLD", panelC + 300, panelR + 300);
 		gi.drawString("NEXT", panelC + 300, panelR + 50);
 		for (int k = 0; k < 5; k++) {

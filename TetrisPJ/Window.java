@@ -10,6 +10,7 @@ public class Window extends Frame {
             this.numOfPlayers = numOfPlayers;
             Window();
         }
+
 	private void Window () {
                 System.out.println(numOfPlayers);
 		setTitle("Tetris");
