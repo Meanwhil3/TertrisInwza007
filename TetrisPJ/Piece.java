@@ -1,3 +1,4 @@
+package TetrisPJ;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Piece {

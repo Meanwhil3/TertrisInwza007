@@ -1,3 +1,4 @@
+package TetrisPJ;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -32,7 +33,7 @@ public class GamePanel extends Panel implements KeyListener {
         key = new int[numOfPlayers][7]; // Increased array size to accommodate the new rotate left key
         screens = new Tetris[numOfPlayers];
         try {
-            br = new BufferedReader(new FileReader("C:\\Users\\Neo\\Desktop\\tetris-multiplayer-master\\GamePanel.java"));
+            br = new BufferedReader(new FileReader("C:\\Users\\Armin\\Downloads"));
             for (int i = 0; i < numOfPlayers; i++) {
                 for (int j = 0; j < 7; j++) { // Increased loop limit to accommodate the new rotate left key
                     String line = br.readLine();
