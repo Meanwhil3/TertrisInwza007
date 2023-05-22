@@ -88,6 +88,7 @@ public class Tetris  {
 	protected int level = 0;
 	protected int lockTime = 0;
 	protected int linesCleared = 0;
+	protected int tspin = 0;
 
 	// constants for UI
 	private final int[] dy = {50, 100, 150, 200, 300};
@@ -254,42 +255,113 @@ public class Tetris  {
 			}
 		}
 	}
-	// Post condition: any full lines are cleared and the respective variable is incremented
-	private int clearLines () {
-		int numCleared = 0;
-		while (true) {
-			// checking if there is a line that is full
-			int index = -1;
-			for (int j = 0; j < 22; j++) {
-				int cnt = 0;
-				for (int i = 0; i < 10; i++) {
-					cnt += grid[j][i] != 0 ? 1 : 0;
-				}
-				if (cnt == 10) {
-					index = j;
-					break;
-				}
-			}
-			if (index == -1)
-				break;
-			// removing the full lines one by one
-			int[][] temp = new int[22][10];
-			for (int i = 0; i < 22; i++)
-				for (int j = 0; j < 10; j++)
-					temp[i][j] = grid[i][j];
-			for (int i = 0; i < index+1; i++) {
-				for (int j = 0; j < 10; j++) {
-					if (i == 0)
-						grid[i][j] = 0;
-					else
-						grid[i][j] = temp[i-1][j];
-				}
-			}
-			linesCleared++;
-			numCleared++;
-		}
-		return numCleared;
-	}
+	public boolean isTSpin(Piece.Active curr, Piece.Point[] pos, int[][] grid) {
+        // Check if the last maneuver was a rotation
+        if (curr.state == 0)
+            return false;
+    
+        // Get the front and back corners of the 3x3 square occupied by the T piece
+        Piece.Point[] frontCorners = {pos[0], pos[2]};
+        Piece.Point[] backCorners = {pos[1], pos[3]};
+    
+        // Count the number of occupied blocks in the front and back corners
+        int frontOccupiedCount = 0;
+        int backOccupiedCount = 0;
+    
+        for (Piece.Point corner : frontCorners) {
+            if (grid[corner.r][corner.c] != 0)
+                frontOccupiedCount++;
+        }
+    
+        for (Piece.Point corner : backCorners) {
+            if (grid[corner.r][corner.c] != 0)
+                backOccupiedCount++;
+        }
+    
+        // Check if it is a proper T-spin
+        if (frontOccupiedCount == 2 && backOccupiedCount >= 1) {
+            // Check if the last rotation offset is 1 by 2 blocks (SRS offset)
+            boolean lastRotationOffset = (curr.state == 1 && pos[0].c != pos[2].c) || (curr.state == 3 && pos[0].r != pos[2].r);
+            return lastRotationOffset || backOccupiedCount == 2;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    public boolean isMiniTSpin(Piece.Active curr, Piece.Point[] pos, int[][] grid) {
+        // Check if the last maneuver was a rotation
+        if (curr.state == 0)
+            return false;
+    
+        // Get the front corners of the 3x3 square occupied by the T piece
+        Piece.Point[] frontCorners = {pos[0], pos[2]};
+    
+        // Count the number of occupied blocks in the front corners
+        int frontOccupiedCount = 0;
+    
+        for (Piece.Point corner : frontCorners) {
+            if (grid[corner.r][corner.c] != 0)
+                frontOccupiedCount++;
+        }
+    
+        // Check if it is a mini T-spin
+        return frontOccupiedCount == 1;
+    }
+    // Post condition: any full lines are cleared and the respective attribute is incremented
+    private int clearLines() {
+        int numCleared = 0;
+        while (true) {
+            // checking if there is a line that is full
+            int index = -1;
+            for (int j = 0; j < 22; j++) {
+                int cnt = 0;
+                for (int i = 0; i < 10; i++) {
+                    cnt += grid[j][i] != 0 ? 1 : 0;
+                }
+                if (cnt == 10) {
+                    index = j;
+                    break;
+                }
+            }
+            if (index == -1)
+                break;
+            // removing the full lines one by one
+            int[][] temp = new int[22][10];
+            for (int i = 0; i < 22; i++)
+                for (int j = 0; j < 10; j++)
+                    temp[i][j] = grid[i][j];
+            for (int i = 0; i < index + 1; i++) {
+                for (int j = 0; j < 10; j++) {
+                    if (i == 0)
+                        grid[i][j] = 0;
+                    else
+                        grid[i][j] = temp[i - 1][j];
+                }
+            }
+            linesCleared++;
+            numCleared++;
+    
+            // Check for T-spin
+            if (p.getActive().id == 6) {
+            Piece.Active currPiece = p.getActive(); // Get the current piece
+            Piece.Point[] currPos = currPiece.pos ; // Get the current piece's position
+            boolean isTSpin = isTSpin(currPiece, currPos, grid);
+            tspin++;
+            if ((isTSpin) && (tspin == 2)){
+                System.out.println();
+                
+    
+            }else if((isTSpin) && (tspin == 1)){
+                System.out.println();
+                
+    
+            }
+            tspin = 0;
+            }
+    }
+        return numCleared;
+        }
 	public void restart () {
 		curr = null;
 		grid = new int[22][10];
