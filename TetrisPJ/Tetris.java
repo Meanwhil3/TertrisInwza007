@@ -18,6 +18,18 @@ public class Tetris  {
 	// the global delay lock value
 	private final int GLOBAL_LOCK = 1000;
 
+	public boolean haveShield = true;
+	public boolean haveAttack = true;
+	public boolean isShielded = false;
+
+	//Item test space
+
+	private Timer timer;
+	public int isShieldedCount = 3;
+	public int shieldCount = 20;
+	public int attackCount = 15;
+
+	// private int numOfPlayers;
 	/*
 	 * Colors representing the different type of blocks
 	 * light gray = empty square
@@ -30,7 +42,17 @@ public class Tetris  {
 	 * Magenta = T
 	 */
 	private static final Color[] c = {Color.LIGHT_GRAY, Color.YELLOW, Color.CYAN, Color.BLUE, Color.ORANGE, Color.GREEN, Color.RED, Color.MAGENTA, Color.DARK_GRAY};
-	private static final Color ghostColor = Color.DARK_GRAY;
+	private static final Color[] gc = {
+        new Color(100, 100, 100),   // Dark Gray
+        new Color(223,218,61),     // Dark Yellow
+        new Color(0, 150, 150),     // Dark Cyanok
+        new Color(64, 124, 242),       // Dark Blue
+        new Color(232, 147, 60),      // Dark Orangeok
+        new Color(116, 194, 101),       // Dark Green
+        new Color(189, 62, 62),       // Dark Red
+        new Color(142,74,152),     // Dark Magentaok
+        new Color(50, 50, 50)       // Dark Gray
+    };
 	private static final Color UIColor = Color.LIGHT_GRAY;
 
 	// Kick cases for J L S T Z blocks
@@ -203,7 +225,7 @@ public class Tetris  {
 			}
 			d--;
 			// painting the ghost piece and the active piece
-			gi.setColor(ghostColor);
+			gi.setColor(gc[curr.id]);
 			for (Piece.Point block : curr.pos)
 				if (block.r+d >= 2)
 					gi.fillRect(panelC + block.c*25+10, panelR + (block.r+d)*25, 24, 24);
@@ -219,16 +241,33 @@ public class Tetris  {
 		gi.setColor(UIColor);
 		gi.drawString("LINES CLEARED  : " + linesCleared, panelC + 10, panelR + 10);
 		gi.drawString("CURRENT LEVEL : " + level, panelC + 10, panelR + 25);
+		if(attackCount<15){
+			// gi.setColor(UIColor);
+			gi.drawString("Attack CD:"+attackCount, panelC + 280, panelR + 370);
+		}
+		else{
+			// gi.setColor(UIColor);
+			gi.drawString("Attack Ready", panelC + 280, panelR + 370);
+		}
+		if(shieldCount<15){
+			// gi.setColor(UIColor);
+			gi.drawString("Shield CD: "+shieldCount, panelC + 280, panelR + 370);
+		}
+		else{
+			// gi.setColor(UIColor);
+			gi.drawString("DEFEND Ready", panelC + 280, panelR + 390);
+
+		}
 		if (isPaused)
-			gi.drawString("PAUSED", panelC + 315, 25);
+			gi.drawString("PAUSED", panelC + 294, 25);
 		if (isGameOver)
 			gi.drawString("GAMEOVER -- ESCAPE FOR QUIT; R FOR RESTART", panelC + 10, panelR + 40);
-		gi.drawString("HOLD", panelC + 300, panelR + 300);
-		gi.drawString("NEXT", panelC + 324, panelR + 45);
+		gi.drawString("HOLD", panelC + 302, panelR + 295);
+		gi.drawString("NEXT", panelC + 304, panelR + 45);
 		for (int k = 0; k < 5; k++) {
 			for (int i = 0; i < 2; i++) {
 				for (int j = 0; j < 4; j++) {
-					gi.fillRect(panelC + j*20 + 300, panelR + i*20 + dy[k], 19, 19);
+					gi.fillRect(panelC + j*20 + 280, panelR + i*20 + dy[k], 19, 19);
 				}
 			}
 		}
@@ -237,7 +276,7 @@ public class Tetris  {
 			Piece.Active holdPiece = p.getActive(holdId-1);
 			gi.setColor(c[holdPiece.id]);
 			for (Piece.Point block : holdPiece.pos) {
-				gi.fillRect(panelC + (block.c-3)*20+300, panelR + block.r*20 + dy[4], 19, 19);
+				gi.fillRect(panelC + (block.c-3)*20+280, panelR + block.r*20 + dy[4], 19, 19);
 			}
 		}
 		// paints the queue of blocks
@@ -247,7 +286,7 @@ public class Tetris  {
 				Piece.Active nextPiece = p.getActive(id);
 				gi.setColor(c[nextPiece.id]);
 				for (Piece.Point block : nextPiece.pos) {
-					gi.fillRect(panelC + (block.c-3)*20+300, panelR + block.r*20 + dy[i], 19, 19);
+					gi.fillRect(panelC + (block.c-3)*20+280, panelR + block.r*20 + dy[i], 19, 19);
 				}
 				i++;
 				if (i >= 4)
@@ -428,5 +467,68 @@ public class Tetris  {
 					curr.pos[i].r--;
 		}
 		panel.repaint();
+	}
+
+	public void countTimer() {
+		timer = new Timer();
+		// isShieldedCount
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				if (isShieldedCount > 0) {
+					isShielded = true;
+					isShieldedCount--;
+				} else {
+					isShielded = false;
+					timer.cancel();
+				}
+			}
+		}, 0, 1000); // schedules the task to run every 1 second
+	}
+
+	public void shieldCount() {
+		timer = new Timer();
+		// shieldCount
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				if (shieldCount > 0) {
+					haveShield = false;
+					shieldCount--;
+				} else {
+					shieldCount = 15;
+					haveShield = true;
+					timer.cancel();
+				}
+			}
+		}, 0, 1000);
+	}
+	// public boolean haveShield = true;
+	// public boolean haveAttack = true;
+	// public boolean isShielded = false;
+
+	// //Item test space
+
+	// private Timer timer;
+	// public int isShieldedCount = 3;
+	// public int shieldCount = 20;
+	// public int attackCount = 15;
+	public void attackCount() {
+		timer = new Timer();
+		// attackCount
+		timer.schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				if (attackCount > 0) {
+					haveAttack = false;
+					attackCount--;
+				} else {
+					attackCount = 15;
+					haveAttack = true;
+					timer.cancel();
+				}
+			}
+		}, 0, 1000);
 	}
 }

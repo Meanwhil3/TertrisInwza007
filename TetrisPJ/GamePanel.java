@@ -26,7 +26,7 @@ public class GamePanel extends Panel implements KeyListener {
 
     private BufferedReader br;
     private int[][] key;
-    public boolean isShielded = false;
+    // public boolean isShielded = false;
 
     GamePanel(int numOfPlayers) {
         this.numOfPlayers = numOfPlayers;
@@ -107,6 +107,46 @@ public class GamePanel extends Panel implements KeyListener {
                 screens[i].restart();
             repaint();
             return;
+        } else if (e.getKeyCode() == KeyEvent.VK_C) {
+            if (screens[0].haveAttack == true) {
+                if (screens[1].isShielded == true) {
+                    screens[1].isShielded = false;
+                    screens[0].attackCount();
+                    return;
+                } else if (screens[1].isShielded == false) {
+                    screens[1].addGarbage(2);
+                    screens[0].attackCount();
+                    return;
+                } 
+            } else {
+                return;
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_L) {
+            if (screens[1].haveAttack == true) {
+                if (screens[0].isShielded == true) {
+                    screens[0].isShielded = false;
+                    screens[1].attackCount();
+                    return;
+                } else if (screens[0].isShielded == false) {
+                    screens[0].addGarbage(2);
+                    screens[1].attackCount();
+                    return;
+                }
+            } else {
+                return;
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_Z) {
+            if (screens[0].haveShield == true) {
+                screens[0].isShielded = true;
+            } else {
+                return;
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_K) {
+            if (screens[1].haveShield == true) {
+                screens[1].isShielded = true;
+            } else {
+                return;
+            }
         }
         if (screens[0].isPaused || screens[0].isGameOver)
             return;
@@ -148,7 +188,7 @@ public class GamePanel extends Panel implements KeyListener {
                             screens[i].isHolding = true;
                             screens[i].time = 1 << 30;
                             break;
-                        case 6: // hard drop
+                            case 6: // hard drop
                             screens[i].time = 1 << 30;
                             screens[i].lockTime = 1 << 30;
                             while (screens[i].movePiece(1, 0)) ;
