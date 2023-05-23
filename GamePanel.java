@@ -137,12 +137,14 @@ public class GamePanel extends Panel implements KeyListener {
         } else if (e.getKeyCode() == KeyEvent.VK_Z) {
             if (screens[0].haveShield == true) {
                 screens[0].isShielded = true;
+                screens[0].shieldCount();
             } else {
                 return;
             }
         } else if (e.getKeyCode() == KeyEvent.VK_K) {
             if (screens[1].haveShield == true) {
                 screens[1].isShielded = true;
+                screens[1].shieldCount();
             } else {
                 return;
             }

@@ -238,9 +238,9 @@ public class Tetris  {
 	public void displayUI (Graphics gi) {
 		Font font = new Font("Arial", Font.BOLD, 12);
 		Image shield = Toolkit.getDefaultToolkit().getImage("shield.png");
-		Image atack = Toolkit.getDefaultToolkit().getImage("attack.png");
-		Image shields = Toolkit.getDefaultToolkit().getImage("shieldBroken.png");
-		Image atack2= Toolkit.getDefaultToolkit().getImage("attackcooldown.png");
+		Image attack = Toolkit.getDefaultToolkit().getImage("attack.png");
+		Image shieldbroken = Toolkit.getDefaultToolkit().getImage("shieldBroken.png");
+		Image attackcooldown = Toolkit.getDefaultToolkit().getImage("attackcooldown.png");
 
 		gi.setFont(font);
 		gi.setColor(Color.WHITE);
@@ -249,17 +249,17 @@ public class Tetris  {
 		if(attackCount<15){
 			// gi.setColor(UIColor);
 			gi.drawString("Attack CD:"+attackCount, panelC + 280, panelR + 430);
-			gi.drawImage(atack2, panelC + 270, panelR + 335, null);
+			gi.drawImage(attackcooldown, panelC + 270, panelR + 335, null);
 		}
 		else{
 			// gi.setColor(UIColor);
 			gi.drawString("Attack Ready", panelC + 281, panelR + 430);
-			gi.drawImage(atack, panelC + 270, panelR + 335, null);
+			gi.drawImage(attack, panelC + 270, panelR + 335, null);
 		}
 		if(shieldCount<15){
 			// gi.setColor(UIColor);
 			gi.drawString("Shield CD: "+shieldCount, panelC + 281, panelR + 510);
-			gi.drawImage(shields, panelC + 270, panelR + 430, null);
+			gi.drawImage(shieldbroken, panelC + 270, panelR + 430, null);
 		}
 		else{
 			// gi.setColor(UIColor);
@@ -505,7 +505,7 @@ public class Tetris  {
 					haveShield = false;
 					shieldCount--;
 				} else {
-					shieldCount = 15;
+					shieldCount = 20;
 					haveShield = true;
 					timer.cancel();
 				}
