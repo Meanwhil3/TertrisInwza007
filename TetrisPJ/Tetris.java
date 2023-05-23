@@ -217,8 +217,8 @@ public class Tetris  {
 	// paints the user interface
 	public void displayUI (Graphics gi) {
 		gi.setColor(UIColor);
-		gi.drawString("LINES CLEARED: " + linesCleared, panelC + 10, panelR + 10);
-		gi.drawString("CURRENT LEVEL: " + level, panelC + 10, panelR + 20);
+		gi.drawString("LINES CLEARED  : " + linesCleared, panelC + 10, panelR + 10);
+		gi.drawString("CURRENT LEVEL : " + level, panelC + 10, panelR + 30);
 		if (isPaused)
 			gi.drawString("PAUSED", panelC + 10, 30);
 		if (isGameOver)
@@ -255,60 +255,7 @@ public class Tetris  {
 			}
 		}
 	}
-	public boolean isTSpin(Piece.Active curr, Piece.Point[] pos, int[][] grid) {
-        // Check if the last maneuver was a rotation
-        if (curr.state == 0)
-            return false;
-    
-        // Get the front and back corners of the 3x3 square occupied by the T piece
-        Piece.Point[] frontCorners = {pos[0], pos[2]};
-        Piece.Point[] backCorners = {pos[1], pos[3]};
-    
-        // Count the number of occupied blocks in the front and back corners
-        int frontOccupiedCount = 0;
-        int backOccupiedCount = 0;
-    
-        for (Piece.Point corner : frontCorners) {
-            if (grid[corner.r][corner.c] != 0)
-                frontOccupiedCount++;
-        }
-    
-        for (Piece.Point corner : backCorners) {
-            if (grid[corner.r][corner.c] != 0)
-                backOccupiedCount++;
-        }
-    
-        // Check if it is a proper T-spin
-        if (frontOccupiedCount == 2 && backOccupiedCount >= 1) {
-            // Check if the last rotation offset is 1 by 2 blocks (SRS offset)
-            boolean lastRotationOffset = (curr.state == 1 && pos[0].c != pos[2].c) || (curr.state == 3 && pos[0].r != pos[2].r);
-            return lastRotationOffset || backOccupiedCount == 2;
-        }
-        else{
-            return false;
-        }
-    }
-    
-    public boolean isMiniTSpin(Piece.Active curr, Piece.Point[] pos, int[][] grid) {
-        // Check if the last maneuver was a rotation
-        if (curr.state == 0)
-            return false;
-    
-        // Get the front corners of the 3x3 square occupied by the T piece
-        Piece.Point[] frontCorners = {pos[0], pos[2]};
-    
-        // Count the number of occupied blocks in the front corners
-        int frontOccupiedCount = 0;
-    
-        for (Piece.Point corner : frontCorners) {
-            if (grid[corner.r][corner.c] != 0)
-                frontOccupiedCount++;
-        }
-    
-        // Check if it is a mini T-spin
-        return frontOccupiedCount == 1;
-    }
-    // Post condition: any full lines are cleared and the respective attribute is incremented
+	
     private int clearLines() {
         int numCleared = 0;
         while (true) {
@@ -341,27 +288,9 @@ public class Tetris  {
             }
             linesCleared++;
             numCleared++;
-    
-            // Check for T-spin
-            if (p.getActive().id == 6) {
-            Piece.Active currPiece = p.getActive(); // Get the current piece
-            Piece.Point[] currPos = currPiece.pos ; // Get the current piece's position
-            boolean isTSpin = isTSpin(currPiece, currPos, grid);
-            tspin++;
-            if ((isTSpin) && (tspin == 2)){
-                System.out.println();
-                
-    
-            }else if((isTSpin) && (tspin == 1)){
-                System.out.println();
-                
-    
-            }
-            tspin = 0;
-            }
-    }
+    		}
         return numCleared;
-        }
+    }
 	public void restart () {
 		curr = null;
 		grid = new int[22][10];
