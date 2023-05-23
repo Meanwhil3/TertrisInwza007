@@ -1,5 +1,3 @@
-package TetrisPJ;
-
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.ArrayList;
 import java.util.HashSet;
