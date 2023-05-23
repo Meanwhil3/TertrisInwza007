@@ -239,7 +239,7 @@ public class Tetris  {
 		Font font = new Font("Arial", Font.BOLD, 12);
 		Image shield = Toolkit.getDefaultToolkit().getImage("shield.png");
 		Image attack = Toolkit.getDefaultToolkit().getImage("attack.png");
-		Image shieldbroken = Toolkit.getDefaultToolkit().getImage("shieldBroken.png");
+		Image shieldbroken = Toolkit.getDefaultToolkit().getImage("shieldBroke.png");
 		Image attackcooldown = Toolkit.getDefaultToolkit().getImage("attackcooldown.png");
 
 		gi.setFont(font);
@@ -258,12 +258,12 @@ public class Tetris  {
 		}
 		if(shieldCount<15){
 			// gi.setColor(UIColor);
-			gi.drawString("Shield CD: "+shieldCount, panelC + 281, panelR + 510);
+			gi.drawString("Shield CD: "+shieldCount, panelC + 281, panelR + 520);
 			gi.drawImage(shieldbroken, panelC + 270, panelR + 430, null);
 		}
 		else{
 			// gi.setColor(UIColor);
-			gi.drawString("DEFEND Ready", panelC + 281, panelR + 510);
+			gi.drawString("DEFEND Ready", panelC + 281, panelR + 520);
 			gi.drawImage(shield, panelC + 270, panelR + 430, null);
 
 		}
