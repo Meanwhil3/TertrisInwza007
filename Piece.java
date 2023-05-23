@@ -1,12 +1,6 @@
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.Collections;
 
-public class Piece {
+public abstract class Piece {
     // starting position for each pieces and create a new Point object
     // O, I, J, L, S, Z, T in order
     private static final Point[][] pieces = {
@@ -17,9 +11,7 @@ public class Piece {
         {new Point(1, 3), new Point(1, 4), new Point(0, 4), new Point(0, 5)},
         {new Point(0, 3), new Point(0, 4), new Point(1, 4), new Point(1, 5)},
         {new Point(1, 3), new Point(1, 4), new Point(1, 5), new Point(0, 4)}
-};
-
-
+    };
     // represents a point on the grid
     static class Point {
         int r, c;
@@ -28,53 +20,13 @@ public class Piece {
             this.c = c;
         }
     }
-    
-    public static ArrayList<Integer> getRandomNumbers(int count, int min, int max) {
-        List<Integer> availableNumbers = new ArrayList<>();
-        for (int i = min; i <= max; i++) {
-            availableNumbers.add(i);
-        }
-
-        Set<Integer> uniqueNumbers = new HashSet<>();
-        Random random = new Random();
-
-        while (uniqueNumbers.size() < count) {
-            int randomNumber = random.nextInt(availableNumbers.size());
-            int number = availableNumbers.get(randomNumber);
-            uniqueNumbers.add(number);
-            availableNumbers.remove(randomNumber);
-        }
-
-        ArrayList<Integer> randomList = new ArrayList<>(uniqueNumbers);
-        Collections.shuffle(randomList); // เรียงลำดับแบบสุ่ม
-        return randomList;
-    }
 
     // generates a random piece
-    public Active getActive () {
-        ArrayList<Integer> randomList = getRandomNumbers(7, 0, 6);
-        Random rand = new Random();
-        int randomIndex = rand.nextInt(randomList.size()); // เลือกเลขสุ่มออกมาในช่วงตั้งแต่ 0 ถึง size-1
-        int id = randomList.get(randomIndex);
-        Point[] newPiece = {
-            new Point(pieces[id][0].r, pieces[id][0].c), 
-            new Point(pieces[id][1].r, pieces[id][1].c), 
-            new Point(pieces[id][2].r, pieces[id][2].c), 
-            new Point(pieces[id][3].r, pieces[id][3].c)
-        };
-        return new Active(newPiece, id+1);
-    }
+    public abstract Active getActive();
 
     // return a piece with a specific id
-    public Active getActive (int id) {
-        Point[] newPiece = {
-            new Point(pieces[id][0].r, pieces[id][0].c), 
-            new Point(pieces[id][1].r, pieces[id][1].c), 
-            new Point(pieces[id][2].r, pieces[id][2].c), 
-            new Point(pieces[id][3].r, pieces[id][3].c)
-        };
-        return new Active(newPiece, id+1);
-    }
+    // Overloaded
+    public abstract Active getActive(int id);
 
     //represents the active piece
     static class Active {
@@ -94,7 +46,6 @@ public class Piece {
             else {
                 lor = 0; hir = 3;
                 loc = 3; hic = 6;
-
             }
         }
     }
@@ -111,11 +62,11 @@ public class Piece {
     }
 
     // generates a permutation of the seven pieces and returns it
-	public int[] getPreview () {
-		int[] res = new int[7];
-		for (int i = 0; i < 7; i++)
-			res[i] = i;
-		preview(0, res);
-		return res;
-	}
+    public int[] getPreview() {
+        int[] res = new int[7];
+        for (int i = 0; i < 7; i++)
+            res[i] = i;
+        preview(0, res);
+        return res;
+    }
 }

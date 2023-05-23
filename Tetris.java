@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.util.*;
 
-public class Tetris  {
+public class Tetris implements Trafic {
 	// grid of color ids that stores what kind of block is where
 	private int[][] grid = new int[22][10];
 
@@ -20,11 +20,13 @@ public class Tetris  {
 	public boolean haveShield = true;
 	public boolean haveAttack = true;
 	public boolean isShielded = false;
+	public boolean resetShield = false;
+	public boolean resetAttack = false;
 
 	//Item test space
 
-	private Timer timer;
-	public int isShieldedCount = 3;
+	private Timer shieldTimer;
+	private Timer attackTimer;
 	public int shieldCount = 20;
 	public int attackCount = 15;
 
@@ -92,7 +94,7 @@ public class Tetris  {
 	// Handles the queue for pieces
 	private Queue<Integer> bag = new ArrayDeque<Integer>();
 	// Generates the pieces
-	protected Piece p = new Piece();
+	protected RandomPiece p = new RandomPiece();
 	// Represents the current active piece
 	protected Piece.Active curr = null;
 	// Represents the ID of the current screen
@@ -108,7 +110,6 @@ public class Tetris  {
 	protected int level = 0;
 	protected int lockTime = 0;
 	protected int linesCleared = 0;
-	protected int tspin = 0;
 
 	// constants for UI
 	private final int[] dy = {50, 100, 150, 200, 300};
@@ -124,6 +125,9 @@ public class Tetris  {
 	private TimerTask move = new TimerTask() {
 		@Override
 		public void run () {
+			// addGarbage();
+			// shieldCount();
+			// attackCount();
 			// checking for game states
 			if (isPaused || isGameOver)
 				return;
@@ -246,22 +250,28 @@ public class Tetris  {
 		gi.setColor(Color.WHITE);
 		gi.drawString("LINES CLEARED  : " + linesCleared, panelC + 10, panelR + 10);
 		gi.drawString("CURRENT LEVEL : " + level, panelC + 10, panelR + 25);
-		if(attackCount<15){
+		if(attackCount < 15){
 			// gi.setColor(UIColor);
 			gi.drawString("Attack CD:"+attackCount, panelC + 280, panelR + 430);
 			gi.drawImage(attackcooldown, panelC + 270, panelR + 335, null);
-		}
-		else{
+		} else if (resetAttack == true){
+			gi.drawString("Attack Ready", panelC + 281, panelR + 430);
+			gi.drawImage(attack, panelC + 270, panelR + 335, null);
+			resetAttack = false;
+		} else{
 			// gi.setColor(UIColor);
 			gi.drawString("Attack Ready", panelC + 281, panelR + 430);
 			gi.drawImage(attack, panelC + 270, panelR + 335, null);
 		}
-		if(shieldCount<15){
+		if(shieldCount < 20){
 			// gi.setColor(UIColor);
 			gi.drawString("Shield CD: "+shieldCount, panelC + 281, panelR + 520);
 			gi.drawImage(shieldbroken, panelC + 270, panelR + 430, null);
-		}
-		else{
+		} else if (resetShield == true) {
+			gi.drawString("DEFEND Ready", panelC + 281, panelR + 520);
+			gi.drawImage(shield, panelC + 270, panelR + 430, null);
+			resetShield = false;
+		} else{
 			// gi.setColor(UIColor);
 			gi.drawString("DEFEND Ready", panelC + 281, panelR + 520);
 			gi.drawImage(shield, panelC + 270, panelR + 430, null);
@@ -348,6 +358,13 @@ public class Tetris  {
 		holdId = 0;
 		isHolding = false;
 		isGameOver = false;
+		isShielded = false;
+		haveAttack = true;
+		haveShield = true;
+		resetShield = true;
+		resetAttack = true;
+		reset();
+		// attackCount().timer.cancel();
 	}
 	// attempt to rotate the piece counterclockwise
 	// Post condition: the current piece will be rotated counterclockwise if there is one case (out of five) that work
@@ -444,7 +461,8 @@ public class Tetris  {
 		curr.hir += dr;
 		return true;
 	}
-	protected void addGarbage (int lines) {
+	@Override
+	public void addGarbage (int lines) {
 		for (int i = 0; i < 22; i++) {
 			for (int j = 0; j < 10; j++) {
 				if (grid[i][j] != 0 && i - lines < 0) {
@@ -477,28 +495,11 @@ public class Tetris  {
 		}
 		panel.repaint();
 	}
-
-	public void countTimer() {
-		timer = new Timer();
-		// isShieldedCount
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				if (isShieldedCount > 0) {
-					isShielded = true;
-					isShieldedCount--;
-				} else {
-					isShielded = false;
-					timer.cancel();
-				}
-			}
-		}, 0, 1000); // schedules the task to run every 1 second
-	}
-
+	@Override
 	public void shieldCount() {
-		timer = new Timer();
+		shieldTimer = new Timer();
 		// shieldCount
-		timer.schedule(new TimerTask() {
+		shieldTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				if (shieldCount > 0) {
@@ -507,16 +508,16 @@ public class Tetris  {
 				} else {
 					shieldCount = 20;
 					haveShield = true;
-					timer.cancel();
+					shieldTimer.cancel();
 				}
 			}
 		}, 0, 1000);
 	}
-	
+	@Override
 	public void attackCount() {
-		timer = new Timer();
+		attackTimer = new Timer();
 		// attackCount
-		timer.schedule(new TimerTask() {
+		attackTimer.schedule(new TimerTask() {
 			
 			@Override
 			public void run() {
@@ -526,9 +527,19 @@ public class Tetris  {
 				} else {
 					attackCount = 15;
 					haveAttack = true;
-					timer.cancel();
+					attackTimer.cancel();
 				}
 			}
 		}, 0, 1000);
+	}
+
+	public void reset(){
+		if (shieldTimer != null) {
+			shieldTimer.cancel();
+			shieldCount = 20;
+		}
+		if (attackTimer != null)
+			attackTimer.cancel();
+			attackCount = 15;
 	}
 }
