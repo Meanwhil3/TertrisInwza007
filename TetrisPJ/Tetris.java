@@ -53,7 +53,6 @@ public class Tetris  {
         new Color(142,74,152),     // Dark Magentaok
         new Color(50, 50, 50)       // Dark Gray
     };
-	private static final Color UIColor = Color.LIGHT_GRAY;
 
 	// Kick cases for J L S T Z blocks
 	private static final int[][] movec1 = {{0, -1, -1, 0, -1}, 
@@ -239,10 +238,10 @@ public class Tetris  {
 	// paints the user interface
 	public void displayUI (Graphics gi) {
 		Font font = new Font("Arial", Font.BOLD, 12);
-		Image shield = Toolkit.getDefaultToolkit().getImage("C:\\Users\\pobro\\Downloads\\pixil-frame-0.png");
-		Image atack = Toolkit.getDefaultToolkit().getImage("C:\\Users\\pobro\\Downloads\\pixil-frame-0 (7).png");
-		Image shields = Toolkit.getDefaultToolkit().getImage("C:\\Users\\pobro\\Downloads\\pixil-frame-0 (6).png");
-		Image atack2= Toolkit.getDefaultToolkit().getImage("C:\\Users\\pobro\\Downloads\\pixil-frame-0 (8).png");
+		Image shield = Toolkit.getDefaultToolkit().getImage("shield.png");
+		Image atack = Toolkit.getDefaultToolkit().getImage("attack.png");
+		Image shields = Toolkit.getDefaultToolkit().getImage("shieldBroken.png");
+		Image atack2= Toolkit.getDefaultToolkit().getImage("attackcooldown.png");
 
 		gi.setFont(font);
 		gi.setColor(Color.WHITE);
@@ -250,23 +249,23 @@ public class Tetris  {
 		gi.drawString("CURRENT LEVEL : " + level, panelC + 10, panelR + 25);
 		if(attackCount<15){
 			// gi.setColor(UIColor);
-			gi.drawString("Attack CD:"+attackCount, panelC + 280, panelR + 370);
-			gi.drawImage(atack2, panelC + 255, panelR + 330, null);
+			gi.drawString("Attack CD:"+attackCount, panelC + 280, panelR + 430);
+			gi.drawImage(atack2, panelC + 270, panelR + 335, null);
 		}
 		else{
 			// gi.setColor(UIColor);
-			gi.drawString("Attack Ready", panelC + 280, panelR + 370);
-			gi.drawImage(atack, panelC + 255, panelR + 330, null);
+			gi.drawString("Attack Ready", panelC + 281, panelR + 430);
+			gi.drawImage(atack, panelC + 270, panelR + 335, null);
 		}
 		if(shieldCount<15){
 			// gi.setColor(UIColor);
-			gi.drawString("Shield CD: "+shieldCount, panelC + 280, panelR + 370);
-			gi.drawImage(shields, panelC + 270, panelR + 450, null);
+			gi.drawString("Shield CD: "+shieldCount, panelC + 281, panelR + 510);
+			gi.drawImage(shields, panelC + 270, panelR + 430, null);
 		}
 		else{
 			// gi.setColor(UIColor);
-			gi.drawString("DEFEND Ready", panelC + 280, panelR + 390);
-			gi.drawImage(shield, panelC + 270, panelR + 450, null);
+			gi.drawString("DEFEND Ready", panelC + 281, panelR + 510);
+			gi.drawImage(shield, panelC + 270, panelR + 430, null);
 
 		}
 		if (isPaused)
