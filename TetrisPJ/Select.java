@@ -8,7 +8,6 @@ public class Select implements ActionListener {
     private JFrame frame;
     private JPanel p1,p2,p3,p4;
     private JButton b1,b2;
-    private JTextField textField;
     private JLabel lt,lh;
     private Window window;
 

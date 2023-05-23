@@ -218,13 +218,13 @@ public class Tetris  {
 	public void displayUI (Graphics gi) {
 		gi.setColor(UIColor);
 		gi.drawString("LINES CLEARED  : " + linesCleared, panelC + 10, panelR + 10);
-		gi.drawString("CURRENT LEVEL : " + level, panelC + 10, panelR + 30);
+		gi.drawString("CURRENT LEVEL : " + level, panelC + 10, panelR + 25);
 		if (isPaused)
-			gi.drawString("PAUSED", panelC + 10, 30);
+			gi.drawString("PAUSED", panelC + 315, 25);
 		if (isGameOver)
 			gi.drawString("GAMEOVER -- ESCAPE FOR QUIT; R FOR RESTART", panelC + 10, panelR + 40);
 		gi.drawString("HOLD", panelC + 300, panelR + 300);
-		gi.drawString("NEXT", panelC + 300, panelR + 50);
+		gi.drawString("NEXT", panelC + 324, panelR + 45);
 		for (int k = 0; k < 5; k++) {
 			for (int i = 0; i < 2; i++) {
 				for (int j = 0; j < 4; j++) {
