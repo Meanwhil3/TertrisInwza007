@@ -238,24 +238,35 @@ public class Tetris  {
 	}
 	// paints the user interface
 	public void displayUI (Graphics gi) {
-		gi.setColor(UIColor);
+		Font font = new Font("Arial", Font.BOLD, 12);
+		Image shield = Toolkit.getDefaultToolkit().getImage("C:\\Users\\pobro\\Downloads\\pixil-frame-0.png");
+		Image atack = Toolkit.getDefaultToolkit().getImage("C:\\Users\\pobro\\Downloads\\pixil-frame-0 (7).png");
+		Image shields = Toolkit.getDefaultToolkit().getImage("C:\\Users\\pobro\\Downloads\\pixil-frame-0 (6).png");
+		Image atack2= Toolkit.getDefaultToolkit().getImage("C:\\Users\\pobro\\Downloads\\pixil-frame-0 (8).png");
+
+		gi.setFont(font);
+		gi.setColor(Color.WHITE);
 		gi.drawString("LINES CLEARED  : " + linesCleared, panelC + 10, panelR + 10);
 		gi.drawString("CURRENT LEVEL : " + level, panelC + 10, panelR + 25);
 		if(attackCount<15){
 			// gi.setColor(UIColor);
 			gi.drawString("Attack CD:"+attackCount, panelC + 280, panelR + 370);
+			gi.drawImage(atack2, panelC + 255, panelR + 330, null);
 		}
 		else{
 			// gi.setColor(UIColor);
 			gi.drawString("Attack Ready", panelC + 280, panelR + 370);
+			gi.drawImage(atack, panelC + 255, panelR + 330, null);
 		}
 		if(shieldCount<15){
 			// gi.setColor(UIColor);
 			gi.drawString("Shield CD: "+shieldCount, panelC + 280, panelR + 370);
+			gi.drawImage(shields, panelC + 270, panelR + 450, null);
 		}
 		else{
 			// gi.setColor(UIColor);
 			gi.drawString("DEFEND Ready", panelC + 280, panelR + 390);
+			gi.drawImage(shield, panelC + 270, panelR + 450, null);
 
 		}
 		if (isPaused)
@@ -503,16 +514,7 @@ public class Tetris  {
 			}
 		}, 0, 1000);
 	}
-	// public boolean haveShield = true;
-	// public boolean haveAttack = true;
-	// public boolean isShielded = false;
-
-	// //Item test space
-
-	// private Timer timer;
-	// public int isShieldedCount = 3;
-	// public int shieldCount = 20;
-	// public int attackCount = 15;
+	
 	public void attackCount() {
 		timer = new Timer();
 		// attackCount
