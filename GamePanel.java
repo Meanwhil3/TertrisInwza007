@@ -212,7 +212,11 @@ public class GamePanel extends Panel implements KeyListener {
         int rand = (int) (Math.random() * (numOfPlayers - 1));
         if (rand >= id)
             rand++;
-        screens[rand].addGarbage(send);
-        // System.out.println("SENT " + send);
+        if (screens[rand].isShielded == true) {
+            screens[rand].isShielded = false;
+            return;
+        } else {
+            screens[rand].addGarbage(send);
+        }
     }
 }
