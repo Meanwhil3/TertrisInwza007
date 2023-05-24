@@ -1,7 +1,8 @@
 import java.awt.*;
 import java.util.*;
 
-public class Tetris implements Trafic {
+//
+class Tetris implements Trafic {
 	// grid of color ids that stores what kind of block is where
 	private int[][] grid = new int[22][10];
 
@@ -23,8 +24,6 @@ public class Tetris implements Trafic {
 	public boolean resetShield = false;
 	public boolean resetAttack = false;
 
-	//Item test space
-
 	private Timer shieldTimer;
 	private Timer attackTimer;
 	public int shieldCount = 20;
@@ -44,15 +43,15 @@ public class Tetris implements Trafic {
 	 */
 	private static final Color[] c = {Color.LIGHT_GRAY, Color.YELLOW, Color.CYAN, Color.BLUE, Color.ORANGE, Color.GREEN, Color.RED, Color.MAGENTA, Color.DARK_GRAY};
 	private static final Color[] gc = {
-        new Color(100, 100, 100),   // Ghost Gray
-        new Color(223,218,61),     // Ghost Yellow
-        new Color(0, 150, 150),     // Ghost Cyanok
-        new Color(64, 124, 242),       // Ghost Blue
-        new Color(232, 147, 60),      // Ghost Orangeok
-        new Color(116, 194, 101),       // Ghost Green
-        new Color(189, 62, 62),       // Ghost Red
-        new Color(142,74,152),     // Ghost Magentaok
-        new Color(50, 50, 50)       // Ghost Gray
+        new Color(100, 100, 100),   // Dark Gray
+        new Color(223,218,61),     // Dark Yellow
+        new Color(0, 150, 150),     // Dark Cyanok
+        new Color(64, 124, 242),       // Dark Blue
+        new Color(232, 147, 60),      // Dark Orangeok
+        new Color(116, 194, 101),       // Dark Green
+        new Color(189, 62, 62),       // Dark Red
+        new Color(142,74,152),     // Dark Magentaok
+        new Color(50, 50, 50)       // Dark Gray
     };
 
 	// Kick cases for J L S T Z blocks
@@ -222,7 +221,7 @@ public class Tetris implements Trafic {
 			while (isValid) {
 				d++;
 				for (Piece.Point block : curr.pos)
-					if (block.r + d >= 0 && (block.r+d >= 22 || grid[block.r+d][block.c] != 0))
+					if (block.r + d >= 0 && (block.r + d >= 22 || grid[block.r + d][block.c] != 0))
 						isValid = false;
 			}
 			d--;
@@ -230,12 +229,12 @@ public class Tetris implements Trafic {
 			gi.setColor(gc[curr.id]);
 			for (Piece.Point block : curr.pos)
 				if (block.r+d >= 2)
-					gi.fillRect(panelC + block.c*25+10, panelR + (block.r+d)*25, 24, 24);
+					gi.fillRect(panelC + block.c * 25 + 10, panelR + (block.r + d) * 25, 24, 24);
 
 			gi.setColor(c[curr.id]);
 			for (Piece.Point block : curr.pos)
 				if (block.r >= 2)
-					gi.fillRect(panelC + block.c*25+10, panelR + block.r*25, 24, 24);
+					gi.fillRect(panelC + block.c * 25 + 10, panelR + block.r * 25, 24, 24);
 		}
 	}
 	// paints the user interface
@@ -364,6 +363,7 @@ public class Tetris implements Trafic {
 		resetShield = true;
 		resetAttack = true;
 		reset();
+		// attackCount().timer.cancel();
 	}
 	// attempt to rotate the piece counterclockwise
 	// Post condition: the current piece will be rotated counterclockwise if there is one case (out of five) that work

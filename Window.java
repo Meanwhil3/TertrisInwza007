@@ -2,7 +2,6 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 public class Window extends Frame {
-	private static final long serialVersionUID = -1324363758675184283L;
 	private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	private StringTokenizer st;
 	private int numOfPlayers;

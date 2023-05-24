@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class GamePanel extends Panel implements KeyListener {
-    private static final long serialVersionUID = -8444879183679955468L;
 
     // variables for double buffered display
     private BufferedImage bi;
@@ -213,10 +212,10 @@ public class GamePanel extends Panel implements KeyListener {
         if (rand >= id)
             rand++;
         if (screens[rand].isShielded == true) {
-            screens[rand].isShielded = false;
-            return;
+                screens[rand].isShielded = false;
+                return;
         } else {
-            screens[rand].addGarbage(send);
+                screens[rand].addGarbage(send);
         }
     }
 }
