@@ -41,7 +41,8 @@ class Tetris implements Trafic {
 	 * red = Z
 	 * Magenta = T
 	 */
-	private static final Color[] c = {Color.LIGHT_GRAY, Color.YELLOW, Color.CYAN, Color.BLUE, Color.ORANGE, Color.GREEN, Color.RED, Color.MAGENTA, Color.DARK_GRAY};
+	private static final Color[] c = {Color.LIGHT_GRAY, Color.YELLOW, Color.CYAN,
+		 Color.BLUE, Color.ORANGE, Color.GREEN, Color.RED, Color.MAGENTA, Color.DARK_GRAY};
 	private static final Color[] gc = {
         new Color(100, 100, 100),   // Dark Gray
         new Color(223,218,61),     // Dark Yellow
