@@ -1,9 +1,14 @@
 # TetrisInwza007
 Run Main.py
+
 Control is
+
+R to restart
+ESC to close
+
 Player 1
 A D to move left and right
-W swap to hold piece
+W swap to hold a piece
 S soft drop (piece drop faster)
 Q rotate counter-clockwise
 E rotate clockwise
